@@ -1,2 +1,2 @@
 <?php
-echo "dash";
+echo $_SESSION["usuario"];
