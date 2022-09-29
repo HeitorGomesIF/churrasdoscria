@@ -13,6 +13,7 @@ include "config.php";
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 </head>
 <body>
+    <a href="login.php">logar</a>
 
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>

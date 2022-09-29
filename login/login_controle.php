@@ -4,12 +4,15 @@
 $login = $_POST["usuario"];
 $senha = $_POST["senha"];
 
-$sql = $conexao->query("SELECT * FROM participantes");
+$sql = $conexao->query("SELECT * FROM operadores WHERE login='$login' AND senha='$senha'");
 $result = $sql->fetch_assoc(); 
 
 
+var_dump($result);
+exit(); 
 
-if($senha == $result["senha"] && $login == $result["nome"]){
+
+if($sql->num_rows >= 1){
 
     $_SESSION["usuario"] = $result["nome"];
     $_SESSION["id"] = $result["id"];
