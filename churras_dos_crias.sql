@@ -22,10 +22,33 @@ USE `churras_dos_crias`;
 -- Copiando estrutura para tabela churras_dos_crias.churras
 CREATE TABLE IF NOT EXISTS `churras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_lugar` int(11) DEFAULT NULL,
   `edicao` int(11) DEFAULT 0,
-  `lugar` varchar(50) DEFAULT NULL,
+  `titulo` varchar(50) DEFAULT NULL,
   `ingresso` double DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `data_planejada` date DEFAULT NULL,
+  `data_acontecimento` date DEFAULT NULL,
+  `dh_cadastro` timestamp NULL DEFAULT current_timestamp(),
+  `dh_edicao` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `FK_churras_lugares` (`id_lugar`),
+  CONSTRAINT `FK_churras_lugares` FOREIGN KEY (`id_lugar`) REFERENCES `lugares` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Exportação de dados foi desmarcado.
+
+-- Copiando estrutura para tabela churras_dos_crias.churras_participante
+CREATE TABLE IF NOT EXISTS `churras_participante` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_churras` int(11) DEFAULT NULL,
+  `id_participante` int(11) DEFAULT NULL,
+  `dh_cadastro` timestamp NULL DEFAULT current_timestamp(),
+  `dh_edicao` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `FK_churras_participante_churras` (`id_churras`),
+  KEY `FK_churras_participante_participantes` (`id_participante`),
+  CONSTRAINT `FK_churras_participante_churras` FOREIGN KEY (`id_churras`) REFERENCES `churras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_churras_participante_participantes` FOREIGN KEY (`id_participante`) REFERENCES `participantes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Exportação de dados foi desmarcado.
@@ -33,9 +56,27 @@ CREATE TABLE IF NOT EXISTS `churras` (
 -- Copiando estrutura para tabela churras_dos_crias.itens
 CREATE TABLE IF NOT EXISTS `itens` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_churras` int(11) DEFAULT NULL,
+  `nome` varchar(80) DEFAULT NULL,
+  `preco` double DEFAULT NULL,
+  `dh_cadastro` timestamp NULL DEFAULT current_timestamp(),
+  `dh_edicao` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `FK_itens_churras` (`id_churras`),
+  CONSTRAINT `FK_itens_churras` FOREIGN KEY (`id_churras`) REFERENCES `churras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Exportação de dados foi desmarcado.
+
+-- Copiando estrutura para tabela churras_dos_crias.lugares
+CREATE TABLE IF NOT EXISTS `lugares` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(50) DEFAULT NULL,
-  `preco` varchar(50) DEFAULT NULL,
-  `id_churras` varchar(50) DEFAULT NULL,
+  `foto` varchar(50) DEFAULT NULL,
+  `latitude` varchar(50) DEFAULT NULL,
+  `longitude` varchar(50) DEFAULT NULL,
+  `dh_cadastro` timestamp NULL DEFAULT current_timestamp(),
+  `dh_edicao` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -44,7 +85,11 @@ CREATE TABLE IF NOT EXISTS `itens` (
 -- Copiando estrutura para tabela churras_dos_crias.operadores
 CREATE TABLE IF NOT EXISTS `operadores` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `master` varchar(128) DEFAULT NULL,
+  `nome` int(11) NOT NULL DEFAULT 0,
+  `login` varchar(128) DEFAULT NULL,
+  `senha` varchar(128) DEFAULT NULL,
+  `dh_cadastro` timestamp NULL DEFAULT current_timestamp(),
+  `dh_edicao` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -54,7 +99,8 @@ CREATE TABLE IF NOT EXISTS `operadores` (
 CREATE TABLE IF NOT EXISTS `participantes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(50) DEFAULT NULL,
-  `senha` varchar(50) DEFAULT NULL,
+  `dh_cadastro` timestamp NULL DEFAULT current_timestamp(),
+  `dh_edicao` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
