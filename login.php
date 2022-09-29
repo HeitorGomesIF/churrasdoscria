@@ -17,7 +17,7 @@
     <div class="container-fluid py-5">
         <div class="row py-5">
            <div class="col-md-8 m-auto bg-white p-5 rounded">
-               <form action="login/login_controle.php" method="POST">
+               <form id="loginForm" method="POST">
                    <div class="mb-3">
                        <label>Usuario</label>
                        <input type="text" name="usuario" class="form-control" required>
@@ -36,5 +36,21 @@
 
 
 <script src="assets/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function (event){
+        event.preventDefault();
+
+        let form = new FormData(this);
+
+        fetch("login/login_controle.php",{
+            method: "POST",
+            body: form,
+        }).then(function (response){
+            return response.text()
+        }).then(function (response){
+            alert(response)
+        })
+    })
+</script>
 </body>
 </html>
