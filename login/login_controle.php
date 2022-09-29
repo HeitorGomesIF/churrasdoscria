@@ -1,26 +1,26 @@
 <?php include "../config.php";
 
 
-$login = $_POST["usuario"];
-$senha = $_POST["senha"];
+$login = addslashes( $_POST["usuario"]);
+$senha = addslashes( $_POST["senha"]);
 
 $sql = $conexao->query("SELECT * FROM operadores WHERE login='$login' AND senha='$senha'");
 $result = $sql->fetch_assoc(); 
 
 
-var_dump($result);
-exit(); 
-
 
 if($sql->num_rows >= 1){
+    if($result['senha'] == $senha){
+        unset($senha);
 
-    $_SESSION["usuario"] = $result["nome"];
-    $_SESSION["id"] = $result["id"];
+        $_SESSION["usuario"] = $result;
+    
+    
+        echo " <script> window.location = 'dashboard.php'; </script> "; 
+    } else {
+        echo json_encode(["status" => "erro", "mensagem" => "Senha ou usuarios incorretos amigão ❌"]);
+    }
 
-    echo " <script> window.location = 'dashboard.php'; </script> ";
 }
 
 
-header('location: ../login.php?error=Usuário ou senha incorreto');
-
-//echo json_encode(["status" => "erro", "mensagem" => "Senha ou usuarios incorretos amigão ❌"]);
